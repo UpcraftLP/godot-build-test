@@ -1,0 +1,35 @@
+name: Build (Mono)
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform:
+          - name: windows
+            ext: ".exe"
+          - name: linux
+            ext: ""
+        arch:
+          - x64
+          # - aarch64
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        id: build
+        uses: yeslayla/build-godot-action@f759ed7f8fcb5137cb70873ecf663aa8a1bd998b
+        with:
+          projectDir: "mono"
+          name: "${{ github.event.repository.name }}${{ matrix.platform.ext }}"
+          preset: "${{ matrix.platform.name }}_${{ matrix.arch }}"
+          package: true
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: "${{ github.event.repository.name }}_client_${{ matrix.platform.name }}-${{ matrix.arch }}"
+          path: "${{ steps.build.outputs.build }}"

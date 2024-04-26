@@ -1,4 +1,4 @@
-name: Build
+name: Build (Regular)
 
 on:
   push:
@@ -12,9 +12,9 @@ jobs:
       matrix:
         platform:
           - name: windows
-            ext: '.exe'
+            ext: ".exe"
           - name: linux
-            ext: ''
+            ext: ""
         arch:
           - x64
           # - aarch64
@@ -24,11 +24,12 @@ jobs:
         id: build
         uses: yeslayla/build-godot-action@f759ed7f8fcb5137cb70873ecf663aa8a1bd998b
         with:
-            name: '${{ github.event.repository.name }}${{ matrix.platform.ext }}'
-            preset: '${{ matrix.platform.name }}_${{ matrix.arch }}'
-            package: true
+          projectDir: "regular"
+          name: "${{ github.event.repository.name }}${{ matrix.platform.ext }}"
+          preset: "${{ matrix.platform.name }}_${{ matrix.arch }}"
+          package: true
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: '${{ github.event.repository.name }}_client_${{ matrix.platform.name }}-${{ matrix.arch }}'
-          path: '${{ steps.build.outputs.build }}'
+          name: "${{ github.event.repository.name }}_client_${{ matrix.platform.name }}-${{ matrix.arch }}"
+          path: "${{ steps.build.outputs.build }}"
