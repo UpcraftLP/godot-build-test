@@ -30,5 +30,5 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: '${{ github.event.repository.name }}_client_${{ matrix.platform }}-${{ matrix.arch }}'
+          name: '${{ github.event.repository.name }}_client_${{ matrix.platform.name }}-${{ matrix.arch }}'
           path: '${{ steps.build.outputs.build }}'
